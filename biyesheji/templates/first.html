@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="{{ url_for('static', filename='css/search.css') }}" rel="stylesheet">
+    <!--<link href="../static/css/home.css" rel="stylesheet">-->
+    <!--<meta content="width=device-width, initial-scale=1.0" name="viewport">-->
+    <script src="{{ url_for('static',filename='js/search.js') }}"></script>
+</head>
+<body style="height: 90vh">
+<div class="container">
+    <h1>搜索页面</h1>
+    <div class="search-box">
+        <input class="search-input" id="keyword" placeholder="输入搜索关键词..." type="text" >
+        <select class="select_1">
+            <option value="movie">电影</option>
+            <option value="music">音乐</option>
+            <option value="new">新闻</option>
+
+        </select>
+        <button class="search-button" onclick="handleCategoryChange()">搜索</button>
+    </div>
+</div>
+<div class="result-container">
+<!--    <div class="result">-->
+<!--    </div>-->
+</div>
+</body>
+</html>

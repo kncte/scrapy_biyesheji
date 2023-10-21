@@ -1,0 +1,94 @@
+/* styles.css */
+/*.modal-content img#modal-avatar, img#user-avatar {*/
+/*    border-radius: 50%; !* Make the image circular *!*/
+/*    width: 150px; !* Set the desired width *!*/
+/*    height: 150px; !* Set the desired height *!*/
+/*    object-fit: cover; !* Maintain aspect ratio and cover the entire container *!*/
+/*}*/
+.avatar-content #username-input {
+    height: 30px;
+}
+.avatar-content #email-input {
+    height: 30px;
+}
+#save-changes-btn{
+    background-color: #00F7DE;
+    height: 30px;
+}
+
+
+.avatar-content {
+   display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 20px;
+}
+.avatar-content img{
+        border-radius: 50%;
+        width: 150px;
+         height: 150px;
+}
+
+.centered-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Add this line to vertically center content */
+    text-align: center;
+    padding: 20px; /* Add padding for spacing */
+}
+#username-input,
+#email-input{
+    width: 200px;
+    height: 20px;
+}
+
+
+.modal {
+    display: none; /* Hide the modal by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.4);
+}
+.modal-content {
+    background-color: white; /* White background */
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    border-radius: 10px;
+    position: relative;
+}
+
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#user-avatar-container {
+    position: relative;
+    display: inline-block;
+}
+
+#user-avatar {
+    cursor: pointer;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}

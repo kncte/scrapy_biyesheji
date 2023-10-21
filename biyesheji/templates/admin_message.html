@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+
+    <meta content="webkit" name="renderer">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <title>留言管理</title>
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+<!--    <link rel="stylesheet" href="../static/css/admin_message.css">-->
+
+    <script src="../static/js/jquery.min.js"></script>
+    <script src="../static/layui/layui.js"></script>
+</head>
+<body style="height: 85vh">
+<div class="layui-container full-screen">
+    <!-- 其他内容 -->
+    <div class="layui-container">
+</div>
+</div>
+<table class="layui-hide" id="message-list" lay-filter="message-list">
+                    </table>
+                    <script type="text/html" id="replyBtnTpl">
+                        <button class="layui-btn layui-btn-normal layui-btn-sm" lay-event="reply">回复</button>
+                    </script>
+
+<script>
+
+    layui.use(['table', 'layer'], function () {
+        var table = layui.table;
+        var layer = layui.layer;
+
+        // 初始化表格
+        table.render({
+            height: 'full',
+             title: '留言管理',
+            elem: '#message-list',
+            cellMinWidth: 80,
+            url: '/admin_getmsg',  // 用你的 Flask 路由替换这里
+            page: true,
+            cols: [[
+                {field: 'id', title: 'ID', sort: true, width: 70},
+                {field: 'user_id', title: '用户id', sort: true, width: 100},
+                {field: 'content', title: '留言内容', width: 200},
+                {field: 'submit_time', title: '提交时间', sort: true, width: 130},
+                {field: 'is_handle', title: '是否处理', templet: function(d){
+                    return d.is_handle === 1 ? '<span style="color: green;">已处理</span>' : '<span style="color: red;">未处理</span>';
+                }, sort: true, width: 100},
+                {field: 'handle_time', title: '处理时间', sort: true, width: 130},
+                {field: 'return_content', title: '回复内容', width: 250},
+                {field: 'reply_button', title: '操作', templet: '#replyBtnTpl', width: 100}
+            ]],
+            done: function (res, curr, count) {
+                // 表格渲染完成后的回调函数
+
+            }
+        });
+
+        // 监听工具条
+        table.on('tool(message-list)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'reply') {
+                // 打开一个弹出框来输入回复内容
+                layer.prompt({
+                    formType: 2,
+                    title: '请输入回复内容',
+                    area: ['500px', '300px']
+                }, function (value, index) {
+                    // 将回复内容发送到服务器
+                    $.ajax({
+                        type: 'POST',
+                        url: '/reply_message',  // 用你的 Flask 路由替换这里
+                        data: {id: data.id, reply_content: value},
+                        success: function (response) {
+                            if (response.success) {
+                                layer.msg('回复成功');
+                                // 可选：更新表格以反映更改
+                                table.reload('message-list');
+                            } else {
+                                layer.msg('回复失败');
+                            }
+                            layer.close(index);
+                        },
+                        error: function () {
+                            layer.msg('回复请求失败');
+                            layer.close(index);
+                        }
+                    });
+                });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

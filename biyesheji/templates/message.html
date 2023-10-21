@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户留言板</title>
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+</head>
+<body style="padding: 20px; height: 85vh">
+
+    <div class="layui-container">
+        <div class="layui-row">
+            <div class="layui-col-md6 layui-col-md-offset3">
+                <div class="layui-card" style="width: 600px">
+                    <div class="layui-card-header"><h2>用户留言板</h2></div>
+                    <div class="layui-card-body">
+
+                        <form class="layui-form" id="form">
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">留言内容</label>
+                                <div class="layui-input-block">
+                                    <textarea id="message" lay-verify="required" placeholder="请输入留言" class="layui-textarea"></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="formDemo">提交留言</button>
+                                </div>
+                            </div>
+                        </form>
+
+
+                        <div class="layui-collapse">
+                            <div class="layui-colla-item">
+                                <h2 class="layui-colla-title">我的留言列表</h2>
+                                <div class="layui-colla-content layui-show" id="message-list">
+                                    <!-- 用户留言将在这里显示 -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../static/layui/layui.js"></script>
+    <script src="../static/js/jquery.min.js"></script>
+<script>
+layui.use(['form', 'element'], function(){
+    var form = layui.form;
+    var element = layui.element;
+
+    // 提交留言
+    form.on('submit(formDemo)', function(data){
+        var message = $('#message').val();
+
+
+        // 使用 Ajax 提交留言
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json;charset=UTF-8',
+            url: '/submit_message',
+            data:  JSON.stringify({ message: message }),   // 传递整个 data.field 对象
+            success: function(response) {
+                if (response.status === 'success') {
+                        layer.msg('留言成功！', {time: 1500}, function(){
+                            location.reload();
+                        });
+                } else {
+                    layer.msg('提交失败，请稍后重试');
+                }
+            },
+            error: function() {
+                layer.msg('提交失败，请稍后重试');
+            }
+        });
+
+        return false; // 阻止表单提交
+    });
+});
+// 将这段代码添加到你现有的JavaScript代码中
+$(document).ready(function() {
+    $.ajax({
+        type: 'GET',
+        url: '/get_message',
+        success: function(response) {
+            var messageData = response;
+
+            for (var i = 0; i < messageData.length; i++) {
+                var message = messageData[i].content;
+                var isHandle = messageData[i].is_handle;
+                var submitTime = messageData[i].submit_time;
+                var handleTime = messageData[i].handle_time;
+                var returnContent = messageData[i].return_content;
+
+                var formattedSubmitTime = new Date(submitTime).toLocaleString();
+                var formattedHandleTime = handleTime ? new Date(handleTime).toLocaleString() : '';
+
+                var messageElement = document.createElement('div');
+                messageElement.className = 'layui-colla-item';
+
+                var contentHTML = '<div class="layui-colla-content layui-show">' + message +
+                    '<br>提交时间：' + formattedSubmitTime +
+                    '<br>是否处理：' + (isHandle ? '是' : '否');
+
+                if (isHandle) {
+                    contentHTML += '<br>处理时间：' + formattedHandleTime +
+                        (returnContent ? '<br>回复内容：' + returnContent : '');
+                }
+
+                contentHTML += '</div>';
+
+                messageElement.innerHTML = contentHTML;
+                document.getElementById('message-list').appendChild(messageElement);
+            }
+        },
+        error: function() {
+            console.log('获取消息时发生错误');
+        }
+    });
+});
+
+</script>
+</body>
+</html>

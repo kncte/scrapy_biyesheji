@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scrapy Data</title>
+</head>
+<body>
+    <ul id="data-list"></ul>
+    <script src="../static/js/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port + '/crawl');
+
+        socket.on('crawl_data', function(data) {
+            // 在此处更新页面以显示爬取的数据
+            var dataList = document.getElementById('data-list');
+            console.log(data)
+            dataList.innerHTML += '<li>' + data + '</li>';
+        });
+    </script>
+</body>
+</html>

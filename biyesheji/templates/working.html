@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web Crawler Configuration</title>
+    <link href="../static/css/work.css" rel="stylesheet">
+    <script src="../static/js/jquery.min.js"></script>
+    <script src="../static/js/working.js"></script>
+
+
+</head>
+<body style="height: 85vh">
+<h1 style="font-size: 40px">投递任务</h1>
+    <div class="container"> <!-- 新增容器 div -->
+        <form action="/submit" method="post" id="task-form">
+            <label for="thread_count">线程数量：</label>
+            <input type="number" id="thread_count" name="thread_count" min="1" max="10" required value="1"><br><br>
+
+            <label for="task_type">任务类型：</label>
+            <select id="task_type" name="task_type">
+                <option value="音乐">音乐</option>
+                <option value="电影">电影</option>
+                <option value="新闻">新闻</option>
+            </select><br><br>
+
+            <label for="keyword">关键字：</label>
+            <input type="text" id="keyword" name="keyword" required><br><br>
+
+            <!-- 提交按钮使用新的样式类 -->
+            <input type="submit" value="提交" class="submit-button">
+        </form>
+    </div>
+<div class="div1">
+    <h1 style="font-size: 30px">任务详情</h1>
+    <ul id="data-list" style="font-size: 20px"></ul>
+</div>
+
+
+</body>
+</html>
+<script>
+    document.querySelector('form').addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const threadCount = document.querySelector('#thread_count').value;
+        const taskType = document.querySelector('#task_type').value;
+        const keyword = document.querySelector('#keyword').value;
+        const data = {
+          thread_count: threadCount,
+          task_type: taskType,
+          keyword: keyword
+            };
+        console.log(data)
+        const response = await fetch('/do', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {'Content-Type': 'application/json'}
+        });
+
+        const result = await response.text();
+        alert(result);
+    });
+</script>

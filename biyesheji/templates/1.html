@@ -1,0 +1,26 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dynamic Data with Flask and Scrapy</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Real-time Data</h1>
+    <div id="data-container">
+        <!-- 数据将会在这里动态显示 -->
+    </div>
+
+    <script>
+        function updateData() {
+            $.get('/data', function(data) {
+                // 更新数据显示
+                $('#data-container').text(JSON.stringify(data));
+            });
+        }
+
+        // 定时更新数据
+        setInterval(updateData, 5000); // 每5秒更新一次
+    </script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+body {
+    height: 85vh;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+}
+
+#task_type,
+#thread_count {
+    width: 10%;
+}
+
+h1 {
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+input[type="number"],
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+ul {
+    font-size: 12px;
+    list-style-type: none;
+    padding: 0;
+}
+
+#keyword {
+    width: 20%;
+    height: 30px;
+}
+
+.div1 {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+}
+
+#data-list {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+}
+
+.container {
+    position: relative; /* 设置容器为相对定位 */
+}
+
+.submit-button {
+    position: absolute; /* 设置提交按钮为绝对定位 */
+    bottom: 20px; /* 距离底部 10px */
+    right: 150px; /* 距离右侧 10px */
+}
+
+#data-list li{
+    list-style: none;
+    margin: 5px 0;
+    padding: 5px;
+    border: 1px solid #ddd;
+    width: 80%; /* 设置 li 的宽度为相对于 #data-list 的百分比 */
+    overflow: hidden; /* 超出部分隐藏 */
+    text-overflow: ellipsis; /* 超出部分用省略号表示 */
+    word-wrap: break-word; /* 或者使用 overflow-wrap: break-word; */
+}
+.empty-item {
+    background-color: #eee;
+    width: 50%; /* 设置 emptyItem 的宽度为相对于 #data-list 的百分比 */
+    height: 20px;
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/admin_work.css">
+    <title>任务管理</title>
+</head>
+<body style="height: 90vh">
+    <h1>任务管理</h1>
+    <button type="button" class="del_task" onclick="confirmDelete()">清空记录</button>
+    <br>
+    <!-- 表格 -->
+    <table id="crawlTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>任务关键字</th>
+                <th>任务进程ID</th>
+                <th>任务类型</th>
+                <th>开始时间</th>
+                <th>结束时间</th>
+                <th>任务耗时</th>
+                <th>是否完成</th>
+                <th>Stop</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 表格数据将通过 JavaScript 动态添加 -->
+        </tbody>
+    </table>
+
+    <!-- 停止按钮 -->
+<!--    <button id="stopButton">Stop</button>-->
+
+    <!-- 引入 jQuery，你也可以使用其他方法处理 AJAX 请求 -->
+    <script src="../static/js/jquery.min.js"></script>
+
+    <!-- 引入你的 JavaScript 文件 -->
+    <script src="../static/js/admin_work.js"></script>
+</body>
+</html>

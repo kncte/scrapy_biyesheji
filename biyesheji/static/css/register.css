@@ -1,0 +1,88 @@
+body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+			justify-content: center;
+			align-items: center;
+        }
+
+.bg_color_1{
+	background-color: #F0F2FB;
+	width: 1220px;
+	height: 800px;
+	display: flex;
+	border-radius: 10px;
+	justify-content: center;
+	align-items: center;
+}
+.bg_color_2{
+	background-color: #FFFFFF;
+	width: 950px;
+	height: 700px;
+	display: flex;
+    align-items: center;
+    padding-left: 25px;
+
+}
+.register_email_input{
+	margin-top: 20px;
+
+	height: 25px;
+}
+.register{
+	flex-direction: column;
+	height: 100%;
+	width: 45%;
+	background-color: white;
+
+}
+.register_p{
+	font-size: 40px;
+
+}
+.register_form{
+	width: 100%;
+	height: 60%;
+	padding-left: 20%;
+
+}
+.register_form label{
+	font-size: 25px;
+}
+
+.register_user_input,
+.register_pwd_input
+{
+	margin-top: 20px;
+	width: 60%;
+	height: 35px;
+}
+
+.register_sub{
+	width: 60%;
+	height: 35px;
+	background-color: black;
+	color: white;
+	font-size: 20px;
+	margin-top: 20px;
+}
+.divider {
+    width: 2px;
+    background-color: #ccc;
+    margin: 0 10px;
+	height: 100%;
+}
+.register_text{
+	font-size: 30px;
+	color: skyblue;
+}
+.register_a1{
+	padding-left: 20%;
+}
+.register_a2{
+	padding-left: 30%;
+}

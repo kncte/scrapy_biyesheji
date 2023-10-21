@@ -1,0 +1,105 @@
+body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+			justify-content: center;
+			align-items: center;
+        }
+
+.bg_color_1{
+	background-color: #F0F2FB;
+	width: 1020px;
+	height: 700px;
+	display: flex;
+
+	border-radius: 10px;
+	justify-content: center;
+	align-items: center;
+}
+.bg_color_2{
+
+	background-color: #FFFFFF;
+	width: 950px;
+	height: 650px;
+
+	display: flex;
+    align-items: center;
+    padding-left: 25px;
+
+}
+.login{
+	flex-direction: column;
+	height: 100%;
+	width: 45%;
+	background-color: white;
+
+}
+.login_p{
+	font-size: 40px;
+
+}
+.login_form{
+	width: 100%;
+	height: 60%;
+	padding-left: 20%;
+	padding-top: 0%;
+}
+.login_form label{
+	font-size: 25px;
+}
+
+.login_user_input,
+.login_pwd_input
+{
+	margin-top: 20px;
+	width: 60%;
+	height: 35px;
+}
+.login_captcha_input
+{
+	width: 35%;
+	height: 25px;
+	margin-bottom: 10px;
+}
+
+.login_sub{
+	width: 60%;
+	height: 35px;
+	background-color: black;
+	color: white;
+	font-size: 20px;
+	margin-top: 20px;
+}
+.divider {
+    width: 2px;
+    background-color: #ccc;
+    margin: 0 10px;
+	height: 100%;
+}
+.login_text{
+	font-size: 30px;
+	color: skyblue;
+}
+.login_a1{
+	padding-left: 20%;
+}
+.login_a2{
+	padding-left: 30%;
+}
+        .flash-message {
+            display: none;
+            position: fixed; /* 使用固定定位 */
+            top: 0; /* 距离顶部的距离 */
+            left: 50%; /* 水平居中 */
+            transform: translateX(-50%); /* 水平居中 */
+            width: 80%; /* 可以根据需要调整宽度 */
+            padding: 10px; /* 可以根据需要调整内边距 */
+            background-color: #f8d7da; /* 根据需要设置背景颜色 */
+            color: #721c24; /* 根据需要设置文本颜色 */
+            border: 1px solid #f5c6cb; /* 根据需要设置边框样式 */
+            text-align: center; /* 文本居中 */
+        }

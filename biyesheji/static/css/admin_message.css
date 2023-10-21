@@ -1,0 +1,30 @@
+body {
+    display: flex;
+    /*justify-content: center;*/
+    justify-content: flex-start; /* 将这一行取消注释 */
+    height: 85vh;
+    margin: 0;
+    align-items: flex-start;;
+
+}
+.layui-body{
+    left: 0;
+}
+.layui-tab {
+  width: 100%;
+}
+.layui-card {
+    width: 1000px;
+}
+
+.layui-card-header h2 {
+    font-size: 24px;
+}
+
+.layui-table th {
+    font-size: 16px;
+}
+
+.layui-table td {
+    font-size: 14px;
+}

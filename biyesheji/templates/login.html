@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>登录</title>
+		<link rel="stylesheet" href="../static/css/login.css">
+	</head>
+	<body>
+		<div class="bg_color_1">
+			<div class="bg_color_2">
+				<div class="login">
+					<p class="login_p">
+						登录
+					</p>
+				    <form method="post" action="/login" class="login_form">
+				        <label>用户名：</label><br>
+				        <input type="text" name="username" required class="login_user_input" ><br>
+				        <br>
+						<label>密码： </label><br>
+				        <input type="password" name="password" required class="login_pwd_input" ><br>
+
+                    <label for="captcha">验证码：</label><br>
+                    <input type="text" id="captcha" name="captcha" required class="login_captcha_input">
+                    <a href="#" onclick="refreshCaptcha(); return false;">
+					<img src="/vcode" id="loginvcode" class="col-3" style="cursor:pointer;">
+						</a>
+						<br>
+
+						<a href="/forget_pwd" class="login_a1">忘记密码？点击更改密码</a><br />
+				        <input type="submit" value="Log in" class="login_sub">
+				    </form>
+					<a href="/register" class="login_a2">还没有注册？点击注册</a>
+				</div>
+				<div class="divider"></div>
+				<div class="login_text">
+					<p>欢迎使用Scrapy分布式爬虫系统</p>
+				</div>
+			</div>
+		</div>
+		<div class="flash-message" id="flash-message" >
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-content alert-warning">
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+	    <script>
+        // 获取提示信息容器
+			function refreshCaptcha() {
+				console.log("Clicked on captcha image");
+				var captchaImage = document.getElementById('loginvcode');
+				captchaImage.src = "/vcode?" + Math.random();
+			}
+
+        var flashMessage = document.getElementById('flash-message');
+
+        // 如果有提示信息，则显示容器
+        if (flashMessage && flashMessage.innerHTML.trim() !== '') {
+            flashMessage.style.display = 'block';
+			setTimeout(function() {
+                flashMessage.style.display = 'none';
+            }, 5000); // 5000 毫秒即 5 秒
+        }
+    </script>
+
+	</body>
+</html>

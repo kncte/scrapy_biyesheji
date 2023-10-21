@@ -1,0 +1,177 @@
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+
+<!--  {% block head %}{% endblock %}-->
+<!--  <title>{% block title %}{% endblock %}</title>-->
+<!--  <link rel="stylesheet" href="../static/css/base.css"/>-->
+
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--</head>-->
+<!--<body>-->
+<!--  <div class="header">-->
+<!--    <nav>-->
+<!--      <a href="login">login</a>-->
+<!--      <a href="\">首页</a>-->
+<!--      <a href="admin">管理员登录</a>-->
+<!--    </nav>-->
+<!--  </div>-->
+
+<!--<div class="content">-->
+<!--    &lt;!&ndash; 内容区域 &ndash;&gt;-->
+
+<!--{% block body %}-->
+<!--  {% endblock %}-->
+<!--</div>-->
+
+<!--</body>-->
+<!--</html>-->
+<!--{% extends "base.html" %}-->
+<!--{% block head %}-->
+<!--<link rel="stylesheet" href="../static/css/home.css">-->
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+
+
+<!--{% endblock %}-->
+
+<!--{% block title %} 首页 {% endblock %}-->
+
+<!--{% block body %}-->
+
+
+<!--  <div class="navigation">-->
+<!--    <div class="menuToggle"></div>-->
+<!--    <ul class="ulsss">-->
+<!--        <li class="list active" data-id="zhuye">-->
+<!--&lt;!&ndash;            style="&#45;&#45;clr:#f44336;"&ndash;&gt;-->
+<!--            <a href="#">-->
+<!--                <span class="icon"><img src="../static/assets/zhuye.png"></span>-->
+<!--                <span class="text">主页</span>-->
+<!--            </a>-->
+<!--        </li>-->
+<!--        <li class="list" data-id="renwu"><a href="#"><span class="icon"><img src="../static/assets/renwu.png"></span>-->
+<!--            <span class="text">任务</span>-->
+<!--        </a></li>-->
+<!--        <li class="list" data-id="shitu"><a href="#"><span class="icon"><img src="../static/assets/shujushitu.png"></span>-->
+<!--            <span class="text">视图</span>-->
+<!--        </a></li>-->
+<!--        <li class="list" data-id="liaotianshi"><a href="#"><span class="icon"><img src="../static/assets/tanhua.png"></span>-->
+<!--            <span class="text">聊天室</span>-->
+<!--        </a></li>-->
+<!--        <li class="list" data-id="shezhi"><a href="#"><span class="icon"><img src="../static/assets/shezhi.png"></span>-->
+<!--            <span class="text">设置</span>-->
+<!--        </a></li>-->
+<!--    </ul>-->
+<!--</div>-->
+
+<!--<main class="main-content" >-->
+<!--    {% block content %}-->
+
+<!--    {% endblock %}-->
+<!--</main>-->
+<!--<script src="../static/js/jquery.min.js"></script>-->
+<!--<script src="../static/js/home.js"></script>-->
+<!--{% endblock %}-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+<!--    <script src="./biyesheji/static/layui/layui.js"   charset="utf-8"></script>-->
+    <script src="./biyesheji/static/js/home.js"></script>
+<!--    <link rel="stylesheet" href="./biyesheji/static/layui/css/layui.css" media="all">-->
+<!--    <link rel="stylesheet" href="./biyesheji/static/css/home.css" media="all">-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+
+    <script src="{{ url_for('static', filename='layui/layui.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/home.js') }}"></script>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--1.头部区域-->
+    <div class="layui-header">
+        <div class="layui-logo">后台管理</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+        </ul>
+<!--        <ul class="layui-nav layui-layout-right">-->
+<!--            <li class="layui-nav-item">-->
+<!--                <a href="javascript:;">-->
+<!--                    <img src="" class="layui-nav-img">-->
+<!--                    贤心-->
+<!--                </a>-->
+<!--                <dl class="layui-nav-child">-->
+<!--                    <dd><a href="">基本资料</a></dd>-->
+<!--                    <dd><a href="">安全设置</a></dd>-->
+<!--                </dl>-->
+<!--            </li>-->
+<!--            <li class="layui-nav-item"><a href="">退了</a></li>-->
+<!--        </ul>-->
+    </div>
+    <!--2.左侧导航-->
+    <!--          <div class="layui-side layui-bg-black">
+                <div class="layui-side-scroll"> -->
+    <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+    <!--              <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                    <li class="layui-nav-item leftdaohang" data-url="1.html" mytitle="角色管理"><a>角色管理</a></li>
+                    <li class="layui-nav-item leftdaohang" data-url="2.html" mytitle="账号管理"><a>账号管理</a></li>
+                  </ul>
+                </div>
+              </div> -->
+
+
+    <div class="navigation">
+        <div class="menuToggle"></div>
+        <ul class="ulsss" lay-filter="test">
+            <li class="list active leftdaohang" data-url="/" data-id="zhuye" mytitle="主页">
+                <!--            style="&#45;&#45;clr:#f44336;"-->
+                <a>
+                    <span class="icon"><img src="./biyesheji/static/assets/zhuye.png"></span>
+                    <span class="text">主页</span>
+                </a>
+            </li>
+            <li class="list leftdaohang" data-url="1.html" data-id="renwu" mytitle="任务"><a><span class="icon"><img
+                    src="./biyesheji/static/assets/renwu.png"></span>
+                <span class="text">任务</span>
+            </a></li>
+            <li class="list leftdaohang" data-id="shitu"><a ><span class="icon"><img src="./biyesheji/static/assets/shujushitu.png"></span>
+                <span class="text">视图</span>
+            </a></li>
+            <li class="list" data-id="liaotianshi"><a ><span class="icon"><img src="./biyesheji/static/assets/tanhua.png"></span>
+                <span class="text">聊天室</span>
+            </a></li>
+            <li class="list" data-id="shezhi"><a ><span class="icon"><img src="./biyesheji/static/assets/shezhi"></span>
+                <span class="text">设置</span>
+            </a></li>
+        </ul>
+    </div>
+    <!--3.右侧主体内容区-->
+    <div class="layui-body">
+        <!--tabs标签-->
+        <div class="layui-tab layui-tab-card" lay-filter="demo" lay-allowclose="true">
+            <ul class="layui-tab-title">
+                <!--   <li class="layui-this">角色管理</li>-->
+            </ul>
+            <div class="layui-tab-content" style="height: 150px;">
+                <!--<div class="layui-tab-item layui-show">
+                  1. 我个人比较喜欢卡片风格的，所以你发现又是以卡片的风格举例
+                  2. 删除功能适用于所有风格
+                </div>-->
+
+            </div>
+        </div>
+    </div>
+
+    <!--4.底部固定区域-->
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © layui.com - 底部固定区域
+    </div>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>注册登录页面</title>
+</head>
+<body style="height: 90vh">
+    <form method="post" action="/change_view">
+        <p>选择爬取内容类型：</p>
+        <input type="radio" name="content_type" value="movie" id="movie" checked>
+        <label for="movie">电影</label>
+
+        <input type="radio" name="content_type" value="music" id="music">
+        <label for="music">音乐</label>
+
+        <input type="submit" value="生成图表" style="width: 80px;height: 30px;margin-left: 200px">
+    </form>
+
+    {% if img_data %}
+        <img src="data:image/png;base64,{{ img_data }}" alt="Chart">
+    {% else %}
+        <p>请先选择内容类型并点击生成图表按钮。</p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <title>Upload Avatar</title>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<h1>Upload Avatar</h1>-->
+
+<!--<form action="/upload" method="post" enctype="multipart/form-data">-->
+<!--    <label for="avatar">Avatar:</label>-->
+<!--    <input type="file" id="avatar" name="avatar" accept="image/*">-->
+<!--    <input type="submit" value="Upload">-->
+<!--</form>-->
+<!--&lt;!&ndash; upload_avatar.html &ndash;&gt;-->
+<!--<img id="user-avatar" src="/static/uploads/111.jpg" alt="User Avatar">-->
+<!--<button id="change-avatar-btn">Change Avatar</button>-->
+
+<!--<div id="message"></div>-->
+
+<!--<script>-->
+<!--    document.querySelector('form').addEventListener('submit', function (e) {-->
+<!--        e.preventDefault();-->
+<!--        var formData = new FormData(this);-->
+
+<!--        fetch('/upload', {-->
+<!--            method: 'POST',-->
+<!--            body: formData-->
+<!--        })-->
+<!--        .then(response => response.json())-->
+<!--        .then(data => {-->
+<!--            var messageDiv = document.getElementById('message');-->
+<!--            if (data.code === 0) {-->
+<!--                messageDiv.textContent = 'Avatar uploaded successfully';-->
+<!--            } else {-->
+<!--                messageDiv.textContent = 'Upload failed';-->
+<!--            }-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            console.error('Error:', error);-->
+<!--        });-->
+<!--    });-->
+
+<!--</script>-->
+<!--<script>-->
+<!--    document.getElementById('change-avatar-btn').addEventListener('click', function () {-->
+<!--        window.open('/change_avatar', '_blank', 'width=40%,height=40%,top=30%,left=30%,resizable');-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Avatar</title>
+    <link href="{{ url_for('static', filename='css/11.css') }}" rel="stylesheet">
+</head>
+<body>
+
+<h1>Upload Avatar</h1>
+
+<div id="user-avatar-container">
+    <img alt="User Avatar" id="user-avatar" src="/static/uploads/111.jpg">
+    <input id="file-input" style="display: none;" type="file">
+    <div class="modal" id="avatar-modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="avatar-content">
+                <img alt="User Avatar" id="modal-avatar" src="/static/uploads/111.jpg">
+
+                <br>
+                <button id="change-avatar-btn">选择图片</button>
+                <br>
+                <p id="p1" class="p1">当前用户名:</p>
+                <input id="username-input" placeholder="新用户名" type="text">
+                <br>
+                <p id="p2" class="p2">当前邮箱:</p>
+                <input id="email-input" placeholder="新邮箱" type="email">
+                <br>
+                <button id="save-changes-btn">保存设置</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var saveChangesBtn = document.getElementById('save-changes-btn');
+    var usernameInput = document.getElementById('username-input');
+    var emailInput = document.getElementById('email-input');
+    var p1Elements = document.getElementsByClassName('p1');
+    var p2Elements = document.getElementsByClassName('p2');
+    var p1 = p1Elements[0];
+    var p2 = p2Elements[0];
+    p1.textContent = "asc行者常至乡村振兴"+"aaaaaaaaaaa"
+    saveChangesBtn.addEventListener('click', function () {
+        var formData = new FormData();
+        formData.append('avatar', fileInput.files[0]);
+        formData.append('username', usernameInput.value);
+        formData.append('email', emailInput.value);
+
+        fetch('/update_profile', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.code === 0) {
+                    userAvatar.src = modalAvatar.src; // Update user avatar
+                    p1.textContent = usernameInput.value; // Update username
+                    p2.textContent = emailInput.value; // Update email
+                    avatarModal.style.display = 'none'; // Close the modal
+                } else {
+                    console.error('Update failed:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+
+
+    var avatarModal = document.getElementById('avatar-modal');
+    var userAvatar = document.getElementById('user-avatar');
+    var modalAvatar = document.getElementById('modal-avatar');
+    var closeModalBtn = document.getElementsByClassName('close')[0];
+    var changeAvatarBtn = document.getElementById('change-avatar-btn');
+    var fileInput = document.getElementById('file-input');
+
+    userAvatar.addEventListener('click', function () {
+        avatarModal.style.display = 'block';
+        modalAvatar.src = userAvatar.src;
+    });
+
+    closeModalBtn.addEventListener('click', function () {
+        avatarModal.style.display = 'none';
+    });
+
+    window.addEventListener('click', function (event) {
+        console.log("zzzzzzzzz")
+        if (event.target === avatarModal) {
+            avatarModal.style.display = 'none';
+        }
+    });
+
+    changeAvatarBtn.addEventListener('click', function () {
+        fileInput.click();
+    });
+
+    fileInput.addEventListener('change', function () {
+
+        var selectedFile = fileInput.files[0];
+        if (selectedFile) {
+            modalAvatar.src = URL.createObjectURL(selectedFile);
+            avatarModal.style.display = 'block';
+        }
+    });
+</script>
+
+</body>
+</html>
