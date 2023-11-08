@@ -1,3 +1,4 @@
+
 function handleCategoryChange() {
     var categorySelect = document.querySelector(".select_1");
     var selectedValue = categorySelect.value;
@@ -13,7 +14,10 @@ function handleCategoryChange() {
 
 function searchNew() {
     var keyword = document.getElementById("keyword").value;
-
+    if (keyword ===''){
+        alert("请输入查询的关键字")
+        return
+    }
     // 发送 Ajax 请求到搜索路由
     var xhr = new XMLHttpRequest();
     xhr.open("GET", `/search_new?keyword=${keyword}`, true);
@@ -74,7 +78,10 @@ function NewResults(results) {
 
 function searchMusic() {
     var keyword = document.getElementById("keyword").value;
-
+    if (keyword ===''){
+        alert("请输入查询的关键字")
+        return
+    }
     // 发送 Ajax 请求到搜索路由
     var xhr = new XMLHttpRequest();
     xhr.open("GET", `/search_music?keyword=${keyword}`, true);
@@ -89,7 +96,10 @@ function searchMusic() {
 
 function searchMovies() {
     var keyword = document.getElementById("keyword").value;
-
+    if (keyword ===''){
+        alert("请输入查询的关键字")
+        return
+    }
     // 发送 Ajax 请求到搜索路由
     var xhr = new XMLHttpRequest();
     xhr.open("GET", `/search_movie?keyword=${keyword}`, true);

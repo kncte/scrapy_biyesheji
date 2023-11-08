@@ -71,7 +71,7 @@
 
     layui.use('table', function () {
         var table = layui.table;
-        var currentCategory = 'get_news'; // Default category
+        var currentCategory = 'get_movie'; // Default category
 
         function loadTableData(category, columns) {
             table.render({
@@ -142,9 +142,11 @@
                             .then(data => {
                                 // 检查是否成功获取用户信息
                                 if (data) {
+                                    alert("删除成功")
                                     console.log("yes")
                                 } else {
                                     // 处理获取用户信息失败的情况
+                                    alert("删除失败")
                                     console.error('Failed to fetch user information');
                                 }
                             })
@@ -170,8 +172,18 @@
             });
 
         }
+        const columns = [[
+                {type: 'checkbox', fixed: 'left'}
+                , {field: 'id', title: 'ID', width: 60, fixed: 'left', unresize: true, sort: true}
+                , {field: 'title', title: '标题', width: 300, edit: 'text'}
+                , {field: 'rating', title: '评分', width: 100, edit: 'text'}
+                , {field: 'country', title: '国家', width: 160, edit: 'text'}
+                , {field: 'address', title: '地址', width: 300, edit: 'text'}
+                , {field: '', title: ''}
+                // , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 100}
+            ]]
 
-        loadTableData(currentCategory, []);
+        loadTableData(currentCategory, columns);
 
 
         // Button click events

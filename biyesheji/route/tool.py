@@ -1,5 +1,6 @@
 import json
 import os
+import random
 import signal
 import subprocess
 from datetime import datetime
@@ -8,7 +9,7 @@ from flask import Blueprint, render_template, session, send_file, jsonify, reque
 from flask_login import login_required, current_user
 
 from biyesheji.authentication import set_password
-from biyesheji.plt import create_pic, create_music_pic
+from biyesheji.plt import create_pic, create_music_pic, create_news_pic
 from biyesheji.route.auth import mysql, allowed_file, ImageCode
 # from biyesheji.tools.yzm import ImageCode
 from concurrent.futures import ThreadPoolExecutor
@@ -36,15 +37,172 @@ def delete_route():
 
 @toolssssss.route('/stop_task', methods=['POST'])
 @login_required
-
 def stop_task():
     redis_client.set('state', 'True')
     return jsonify({'status': 'success'})
 
 
-@toolssssss.route('/do', methods=['POST'])
-@login_required
+# @toolssssss.route('/do', methods=['POST'])
+# @login_required
+# def submit():
+#     COMMANDS = {
+#         '音乐': 'scrapy crawl music',
+#         '电影': 'scrapy crawl movie',
+#         '新闻': 'scrapy crawl news',
+#     }
+#     redis_client.set('state', 'False')
+#     data = request.get_json()
+#     thread_count = int(data['thread_count'])
+#     task_type = data['task_type']
+#     keyword = data['keyword']
+#     print("keyword", keyword)
+#
+#     # 记录任务开始时间
+#     start_time = datetime.now()
+#     if task_type == '音乐':
+#         if redis_client.exists('music_data_list'):
+#             redis_client.delete('music_data_list')
+#     if task_type == '电影':
+#         if redis_client.exists('movie_data_list'):
+#             redis_client.delete('movie_data_list')
+#     if task_type == '新闻':
+#         if redis_client.exists('new_data_list'):
+#             redis_client.delete('new_data_list')
+#     cur = mysql.cursor()
+#     sql = "INSERT INTO CrawlTasks (type,gjz, start_time, IsTrue) VALUES (%s, %s, %s, %s)"
+#     cur.execute(sql, (task_type, keyword, start_time.strftime("%H:%M:%S"), 0))  # 设置 IsTrue 为 0，表示任务未完成
+#     cur.close()
+#     mysql.commit()
+#
+#     # 获取任务对应的命令
+#     command = COMMANDS.get(task_type)
+#     work_data = command + " -a key=" + keyword
+#     print("data_aaaaa", work_data)
+#     if command:
+#         def crawl_spider():
+#             try:
+#                 result = subprocess.run(work_data, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+#                                         text=True,
+#                                         encoding='utf-8')
+#                 # cmdline.execute(work_data.split())
+#                 print("aaaaaaaaaaaaaaa", result.stdout)
+#             except subprocess.CalledProcessError as e:
+#                 print(f"Error running Scrapy process: {e}")
+#
+#         futures = []
+#         with ThreadPoolExecutor(max_workers=thread_count) as executor:
+#             for _ in range(thread_count):
+#                 try:
+#                     future = executor.submit(crawl_spider)
+#                     futures.append(future)
+#                 except Exception as e:
+#                     print(f"Error submitting task to ThreadPoolExecutor: {e}")
+#
+#         if redis_client.get('state') == b'True':
+#             for future in futures:
+#                 future.cancel()
+#
+#         for future in futures:
+#             future.result()
+#         # 记录任务结束时间
+#         end_time = datetime.now()
+#
+#         # 更新数据库，设置 end_time，计算时间差，设置 IsTrue 为 1
+#         cur = mysql.cursor()
+#         sql = "UPDATE CrawlTasks SET end_time = %s, Time = %s, IsTrue = %s WHERE gjz = %s AND start_time = %s"
+#         time_diff = end_time - start_time
+#         cur.execute(sql, (end_time.strftime("%H:%M:%S"), time_diff, 1, keyword, start_time.strftime("%H:%M:%S")))
+#         cur.close()
+#         mysql.commit()
+#
+#         return "任务已经完成"
+#     else:
+#         return "无效的任务类型"
+from scrapy import cmdline
 
+
+# @toolssssss.route('/do', methods=['POST'])
+# @login_required
+# def submit():
+#     COMMANDS = {
+#         '音乐': 'scrapy crawl music',
+#         '电影': 'scrapy crawl movie',
+#         '新闻': 'scrapy crawl news',
+#     }
+#     redis_client.set('state', 'False')
+#     data = request.get_json()
+#     thread_count = int(data['thread_count'])
+#     task_type = data['task_type']
+#     keyword = data['keyword']
+#     print("keyword", keyword)
+#
+#     # ... (其余代码不变)
+#
+#     # 记录任务开始时间
+#     start_time = datetime.now()
+#     if task_type == '音乐':
+#         if redis_client.exists('music_data_list'):
+#             redis_client.delete('music_data_list')
+#     if task_type == '电影':
+#         if redis_client.exists('movie_data_list'):
+#             redis_client.delete('movie_data_list')
+#     if task_type == '新闻':
+#         if redis_client.exists('new_data_list'):
+#             redis_client.delete('new_data_list')
+#     cur = mysql.cursor()
+#     sql = "INSERT INTO CrawlTasks (type,gjz, start_time, IsTrue) VALUES (%s, %s, %s, %s)"
+#     cur.execute(sql, (task_type, keyword, start_time.strftime("%H:%M:%S"), 0))  # 设置 IsTrue 为 0，表示任务未完成
+#     cur.close()
+#     mysql.commit()
+#
+#     # 获取任务对应的命令
+#     command = COMMANDS.get(task_type)
+#     work_data = command + " -a key=" + keyword
+#     print("data_aaaaa", work_data)
+#
+#     if command:
+#         def crawl_spider():
+#             try:
+#                 result = subprocess.run(work_data, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+#                                         text=True,
+#                                         encoding='utf-8')
+#                 print("aaaaaaaaaaaaaaa", result.stdout)
+#             except subprocess.CalledProcessError as e:
+#                 print(f"Error running Scrapy process: {e}")
+#
+#         futures = []
+#         with ThreadPoolExecutor(max_workers=thread_count) as executor:
+#             for _ in range(thread_count):
+#                 try:
+#                     future = executor.submit(crawl_spider)
+#                     futures.append(future)
+#                 except Exception as e:
+#                     print(f"Error submitting task to ThreadPoolExecutor: {e}")
+#
+#         # 等待所有线程完成
+#         for future in futures:
+#             future.result()
+#
+#         # 设置state为True
+#         redis_client.set('state', 'True')
+#
+#         # 记录任务结束时间
+#         end_time = datetime.now()
+#
+#         # 更新数据库，设置 end_time，计算时间差，设置 IsTrue 为 1
+#         cur = mysql.cursor()
+#         sql = "UPDATE CrawlTasks SET end_time = %s, Time = %s, IsTrue = %s WHERE gjz = %s AND start_time = %s"
+#         time_diff = end_time - start_time
+#         cur.execute(sql, (end_time.strftime("%H:%M:%S"), time_diff, 1, keyword, start_time.strftime("%H:%M:%S")))
+#         cur.close()
+#         mysql.commit()
+#
+#         return "任务已经完成"
+#     else:
+#         return "无效的任务类型"
+
+
+@toolssssss.route('/do', methods=['POST'])
 def submit():
     COMMANDS = {
         '音乐': 'scrapy crawl music',
@@ -57,16 +215,17 @@ def submit():
     task_type = data['task_type']
     keyword = data['keyword']
     print("keyword", keyword)
-
+    redis_client.set('new_page', 1)
     # 记录任务开始时间
     start_time = datetime.now()
     if task_type == '音乐':
         if redis_client.exists('music_data_list'):
             redis_client.delete('music_data_list')
     if task_type == '电影':
+
         if redis_client.exists('movie_data_list'):
             redis_client.delete('movie_data_list')
-    if task_type == '新闻':
+    if task_type == '音乐':
         if redis_client.exists('new_data_list'):
             redis_client.delete('new_data_list')
     cur = mysql.cursor()
@@ -82,10 +241,10 @@ def submit():
     if command:
         def crawl_spider():
             try:
-                result = subprocess.run(work_data, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+                subprocess.run(work_data.split(), shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                               text=True,
                                encoding='utf-8')
                 # cmdline.execute(work_data.split())
-                print("aaaaaaaaaaaaaaa",result.stdout)
             except subprocess.CalledProcessError as e:
                 print(f"Error running Scrapy process: {e}")
 
@@ -124,7 +283,6 @@ def submit():
 # 路由处理函数，用于返回 crawl 任务数据
 @toolssssss.route('/get_crawl_tasks', methods=['GET'])
 @login_required
-
 def get_crawl_tasks():
     cur = mysql.cursor()
 
@@ -147,7 +305,12 @@ def update_profile():
     email = request.form['email']
     nickname = request.form['nickname']
     user_id = int(current_user.get_id())  # 获取当前登录用户的ID
-    file = request.files['avatar']
+    if 'avatar' in request.files:
+        file = request.files['avatar']
+        # 处理文件上传
+    else:
+        file = ''
+
     print(file)
     try:
         cur = mysql.cursor()
@@ -210,7 +373,6 @@ def home():
 
 @toolssssss.route('/first')
 @login_required
-
 def first():
     # print(redis_client.get("aaaa"))
     return render_template('first.html')
@@ -219,7 +381,6 @@ def first():
 
 @toolssssss.route('/working')
 @login_required
-
 def working():
     # print(redis_client.get("aaaa"))
 
@@ -230,7 +391,6 @@ def working():
 # 第二个视图
 @toolssssss.route('/work')
 @login_required
-
 def work():
     # return render_template('second.html')
     return render_template('second.html')
@@ -238,14 +398,15 @@ def work():
 
 @toolssssss.route('/change_view', methods=['GET', 'POST'])
 @login_required
-
 def change_view():
     if request.method == 'POST':
         content_type = request.form.get('content_type')
         if content_type == 'music':
             pic = create_music_pic()
-        else:
+        elif content_type == 'movie':
             pic = create_pic()
+        else:
+            pic = create_news_pic()
         return render_template('third.html', img_data=pic)
     else:
         return render_template('third.html', img_data=None)
@@ -254,7 +415,6 @@ def change_view():
 # 第三个视图
 @toolssssss.route('/view')
 @login_required
-
 def view():
     img_data = create_pic()
     return render_template('third.html', img_data="")
@@ -263,13 +423,11 @@ def view():
 # 管理员
 @toolssssss.route('/admin')
 @login_required
-
 def admin_login():
     return render_template('admin.html')
 
 
 @toolssssss.route('/set_message')
-
 @login_required
 def set_message():
     print(current_user.id)
@@ -345,10 +503,8 @@ def vcode():
     )
 
 
-
 @toolssssss.route('/change_pwd', methods=['POST'])
 @login_required
-
 def change_pwd():
     data = request.get_json()
     username = data.get('username')
@@ -376,16 +532,15 @@ def change_pwd():
 
 
 @toolssssss.route('/forget_pwd')
-
 def forget_pwd():
     return render_template('forget_pwd.html')
 
 
 @toolssssss.route('/get_data')
 @login_required
-
 def get_data111():
     # 从消息队列中获取数据
+
     task_type = request.args.get('type')
     data_list = ""
 
@@ -400,11 +555,12 @@ def get_data111():
         return jsonify({'data': "", 'state': 'False'})
 
     data = [json.loads(data) for data in data_list]
-
+    print("得到的数据", data)
     state = redis_client.get('state')
-    state = state.decode('utf-8').lower()
-    print(state)
-    if state:
+
+    print("zzzzzzzzzz", state)
+    if state == b'True':
+        print("**************************************")
         return jsonify({'data': data, 'state': 'True'})
     else:
         return jsonify({'data': data, 'state': 'False'})
@@ -451,3 +607,11 @@ def del_data():
     mysql.commit()
 
     return jsonify({'code': 0, 'message': 'success'}), 200
+
+
+@toolssssss.route('/test', methods=['POST'])
+def test():
+    random_data = [random.randint(1, 8888888888) for _ in range(1000)]  # 生成一千个随机整数
+    return jsonify({
+        'data': random_data
+    })

@@ -15,9 +15,8 @@ class search_music:
         self.cursor = conn.cursor()
 
     def search_music_by_keyword(self, keyword):
-        sql = "SELECT * FROM musicdatabase WHERE music_name LIKE %s OR singer LIKE %s OR Album_Name LIKE %s"
+        sql = "SELECT * FROM musicdatabase WHERE music_name LIKE %s OR singer LIKE %s"
         keyword = f"%{keyword}%"  # 在关键字前后添加 % 通配符，以实现模糊匹配
-        print(keyword)
         self.cursor.execute(sql, (keyword, keyword))
         result = self.cursor.fetchall()
         print(result)

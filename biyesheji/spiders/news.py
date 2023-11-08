@@ -25,17 +25,18 @@ class NewSpider(scrapy.Spider):
                       'Chrome/64.0.3282.140 Safari/537.36',
     }
     start_page = 0  # 起始页数
-    max_pages = 10  # 最大页数，根据需求修改
+    max_pages = 2  # 最大页数，根据需求修改
 
     def __init__(self, key=None, *args, **kwargs):
         super(NewSpider, self).__init__(*args, **kwargs)
-        global nums  # 在函数外部也声明为全局变量
-        nums = 0
+        # 在函数外部也声明为全局变量
+
         self.key = key
         self.redis_client = redis.StrictRedis(host='121.196.205.18', port=6379, db=0, password=123456)
         try:
             self.redis_client.ping()
             self.redis_client.set('state', 'False')
+
             print('Connected to Redis')
         except Exception as e:
             print(f'Failed to connect to Redis: {str(e)}')
@@ -102,10 +103,6 @@ class NewSpider(scrapy.Spider):
                 urls = None
                 time = None
             self.set_key_with_ttl(self.redis_key, urls.strip() if urls else None, 300)
-
-            # item['title'] = title.strip() if title else None
-            # item['content'] = cleaned_text if cleaned_text else None
-
             item['urls'] = urls.strip() if urls else None
             item['time'] = time.strip() if time else None
             # item['new_from'] = "中国新闻网"
@@ -115,7 +112,6 @@ class NewSpider(scrapy.Spider):
             # yield item
 
     def sec_parse(self, response, **kwargs):
-        global nums
 
         item = response.meta['item']
         selector = scrapy.Selector(response=response)
@@ -164,23 +160,30 @@ class NewSpider(scrapy.Spider):
             'new_from': new_from
         }
         data_json = json.dumps(item_dict, ensure_ascii=False)
-        nums = nums + 1
-        data = {'num': f"正在写入第{nums}条数据  "}
+        page = self.redis_client.get('new_page')
+        page = page.decode('utf-8')
+        data = {'num': f"正在写入第{page}条数据  "}
+        page = int(page) + 1
+        self.redis_client.set('new_page', str(page))
         data2 = json.dumps(dict(data), ensure_ascii=False)
         self.redis_client.lpush('new_data_list', data2)
         self.redis_client.lpush('new_data_list', data_json)
         yield item
         if self.redis_client.get('state') == b'True':
+            print("已结束")
             self.log("Stopping spider due to state=True in Redis")
             self.crawler.engine.close_spider(self, 'crawling_finished')
 
     def closed(self, reason):
         if reason == 'finished':
-            self.logger.info('线程已结束')
+            # self.redis_client.set('state', "True")
+            print("线程已结束", reason)
         elif reason == 'canceled':
-            self.logger.info('Spider已手动取消 ')
+            # self.redis_client.set('state', "True")
+            print("线程已取消", reason)
         else:
-            self.logger.info(f'出问题了 : {reason}')
+            # self.redis_client.set('state', "True")
+            print("故障", reason)
 
 
 def parse_text(text):
@@ -196,7 +199,6 @@ def parse_text(text):
 
 def re_text(text):
     source_pattern = re.compile(r'来源[：:\s]*([^<]+)')
-
     match = source_pattern.search(text)
     if match:
         source = match.group(1)

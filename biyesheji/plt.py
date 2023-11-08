@@ -63,45 +63,48 @@ def create_pic():
     return img_data
 
 
-# def create_music_pic():
-#     plt.clf()
-#     # 假设你的数据库查询有类似的结构
-#     cur = mysql.cursor()
-#     cur.execute("SELECT * FROM musicdatabase")
-#     songs = cur.fetchall()
-#     print(songs)
-#     singer_count = {}
-#     for song in songs:
-#         singer = song['singer']
-#         if singer in singer_count:
-#             singer_count[singer] += 1
-#         else:
-#             singer_count[singer] = 1
-#     cur.close()
-#     # 创建柱状图
-#     singers = list(singer_count.keys())
-#     song_counts = list(singer_count.values())
-#
-#     plt.bar(singers, song_counts, color='skyblue')
-#     plt.xlabel('歌手')
-#     plt.ylabel('歌曲数量')
-#     plt.title('歌手的歌曲数量分布')
-#     plt.xticks(rotation=45, ha='right')  # 防止歌手名称重叠
-#
-#     # 在柱状图上添加文本标签
-#     for i, count in enumerate(song_counts):
-#         plt.text(i, count, str(count), ha='center', va='bottom')
-#
-#     # 将图表保存到 BytesIO 对象中
-#     img_buffer = BytesIO()
-#     plt.savefig(img_buffer, format='png')
-#     img_buffer.seek(0)
-#     img_data = base64.b64encode(img_buffer.read()).decode()
-#
-#     # 返回图像数据
-#     return img_data
-#
-#
+# def create_news_pic():
+def create_news_pic():
+    plt.clf()
+    # 假设你的数据库查询有类似的结构
+    cur = mysql.cursor()
+    cur.execute("SELECT from_source FROM newdatabase")
+    news = cur.fetchall()
+    cur.close()
+    # 统计歌手数量
+    news_count = {}
+    for new in news:
+        temp = new['from_source']
+        if temp in news_count:
+            news_count[temp] += 1
+        else:
+            news_count[temp] = 1
+
+    sorted_news = sorted(news_count.items(), key=lambda x: x[1], reverse=True)[:10]
+    top_news = dict(sorted_news)
+
+    # 创建柱状图
+    singers = list(top_news.keys())
+    song_counts = list(top_news.values())
+
+    plt.bar(singers, song_counts, color='skyblue')
+    plt.xlabel('单位')
+    plt.ylabel('发布数量')
+    plt.title('发布最多的前10个单位')
+    plt.xticks(rotation=45, ha='right')  # 防止歌手名称重叠
+
+    # 在柱状图上添加文本标签
+    for i, count in enumerate(song_counts):
+        plt.text(i, count, str(count), ha='center', va='bottom')
+
+    # 将图表保存到 BytesIO 对象中
+    img_buffer = BytesIO()
+    plt.savefig(img_buffer, format='png')
+    img_buffer.seek(0)
+    img_data = base64.b64encode(img_buffer.read()).decode()
+
+    # 返回图像数据
+    return img_data
 
 def create_music_pic():
     plt.clf()
@@ -110,7 +113,6 @@ def create_music_pic():
     cur.execute("SELECT * FROM musicdatabase")
     songs = cur.fetchall()
     cur.close()
-
     # 统计歌手数量
     singer_count = {}
     for song in songs:

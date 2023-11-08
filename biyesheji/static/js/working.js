@@ -5,20 +5,14 @@ function pollData() {
         url: '/get_data?type='+taskType,
         method: 'GET',
         success: function (data) {
-            console.log("----", data['state'])
             // 在前端处理接收到的数据
-            if (data.status === 'stop_polling') {
-                // 如果服务器告知停止轮询，停止轮询
-                console.log('Data fetching stopped by server.');
-                return;
-            }
+            console.log("得到的数据",data)
             updateUI(data);
             if (data['state'] === 'True') {
                 // 如果状态为 'stop'，停止轮询
                 console.log('Data fetching stopped.');
                 return;
             }
-
             setTimeout(pollData, 2000);
         },
         error: function () {

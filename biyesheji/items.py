@@ -18,6 +18,9 @@ class MovieItem(scrapy.Item):
     rating = scrapy.Field()
     country = scrapy.Field()
     address = scrapy.Field()
+    type = scrapy.Field()
+    duration = scrapy.Field()
+    jianjie = scrapy.Field()
 
 
 class MusicItem(scrapy.Item):
@@ -27,7 +30,6 @@ class MusicItem(scrapy.Item):
     Album_Name = scrapy.Field()
     Album_pic = scrapy.Field()
     mp3_url = scrapy.Field()
-
 
 
 class NewsItem(scrapy.Item):

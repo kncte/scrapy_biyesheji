@@ -1,4 +1,3 @@
-
 import scrapy
 import pymysql
 import configparser
@@ -33,11 +32,12 @@ class BasePipeline:
 
 class MoviePipeline(BasePipeline):
     def process_item(self, item, spider):
-        sql = "INSERT INTO moviedatabase (title, rating, country, address) VALUES (%s, %s, %s, %s)"
+        sql = ("INSERT INTO moviedatabase (title, rating, country, address,type,duration) VALUES (%s, %s, %s, %s, %s, "
+               "%s)")
         title = str(item['title'])
         rating = float(item['rating']) if item['rating'] else None
 
-        values = (title, rating, item['country'], item['address'])
+        values = (title, rating, item['country'], item['address'], item['type'], item['duration'])
         print("啊啊啊啊啊啊啊啊啊啊-----------", values)
 
         select_sql = "SELECT title FROM moviedatabase WHERE title = %s"
@@ -66,7 +66,7 @@ class MusicPipeline(BasePipeline):
         Album_Name = str(item['Album_Name'])
         Album_pic = str(item['Album_pic'])
         mp3_url = str(item['mp3_url'])
-        values = (name, music_id, singer, Album_Name, Album_pic,mp3_url)
+        values = (name, music_id, singer, Album_Name, Album_pic, mp3_url)
         print("啊啊啊啊啊啊啊啊啊啊-----------", values)
         select_sql = "SELECT music_name FROM musicdatabase WHERE music_name = %s"
         self.cursor.execute(select_sql, name)

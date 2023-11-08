@@ -12,7 +12,7 @@ from scrapy.signalmanager import dispatcher
 from scrapy import signals
 
 
-def stop_spider(signal, frame):
+def stop_spider(spider):
     # 在这里执行停止任务的操作
     print("Received signal to stop spider")
     raise SystemExit
@@ -37,17 +37,17 @@ REDIS_PORT = 6379
 # REDIS_PASSWORD = '123456'
 REDIS_PARAMS = {'password': '123456'}
 
-# 调度器启用Redis存储Requests队列
-SCHEDULER = "scrapy_redis.scheduler.Scheduler"
-
-# 确保所有的爬虫实例使用Redis进行重复过滤
+# # 调度器启用Redis存储Requests队列
+# SCHEDULER = "scrapy_redis.scheduler.Scheduler"
+#
+# # 确保所有的爬虫实例使用Redis进行重复过滤
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
-
-# 将Requests队列持久化到Redis，可支持暂停或重启爬虫
-SCHEDULER_PERSIST = True
-
-# Requests的调度策略，默认优先级队列
-SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.PriorityQueue'
+#
+# # 将Requests队列持久化到Redis，可支持暂停或重启爬虫
+# SCHEDULER_PERSIST = True
+#
+# # Requests的调度策略，默认优先级队列
+# SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.PriorityQueue'
 
 # 将爬取到的items保存到Redis 以便进行后续处理
 ITEM_PIPELINES = {

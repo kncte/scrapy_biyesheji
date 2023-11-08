@@ -50,6 +50,10 @@
           task_type: taskType,
           keyword: keyword
             };
+        if (keyword ===''){
+            alert("请输入关键字")
+            return
+        }
         console.log(data)
         const response = await fetch('/do', {
             method: 'POST',

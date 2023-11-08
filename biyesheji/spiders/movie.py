@@ -34,7 +34,7 @@ class MovieSpider(scrapy.Spider):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36'}
     start_page = 1
-    max_pages = 2
+    max_pages = 10
 
     def start_requests(self):
         for page in range(self.start_page, self.start_page + self.max_pages):
@@ -48,7 +48,7 @@ class MovieSpider(scrapy.Spider):
         self.redis_client.expire(key, ttl_seconds)
 
     def parse(self, response):
-        global nums
+
         selector = scrapy.Selector(response=response)
         parent_divs = selector.xpath("//*[@id='index']/div[1]/div[1]/div")
         urls = 'https://ssr1.scrape.center'
@@ -59,18 +59,24 @@ class MovieSpider(scrapy.Spider):
             rating = div.xpath("./div/div/div[3]/p[1]/text()").extract_first()
             country = div.xpath("./div/div/div[2]/div[2]/span[1]/text()").extract_first()
             address = urls + div.xpath("./div/div/div[2]/a/@href").extract_first()
+            type = div.xpath("./div/div[2]/div[1]/button[1]/span/text()").extract_first()
+            duration = div.xpath("./div/div/div[2]/div[2]/span[3]/text()").extract_first()
 
             item['title'] = title.strip() if title else None
             item['rating'] = rating.strip() if rating else None
             item['country'] = country.strip() if country else None
             item['address'] = address.strip() if address else None
+            item['type'] = type.strip() if type else None
+            item['type'] = duration.strip() if duration else None
+
             data_json = json.dumps(dict(item), ensure_ascii=False)
-            # sio.emit('crawl_data', data_json, namespace='/crawl')
-            # asyncio.create_task(self.process_data(data_json))
-            # sio.emit('crawl_data', data_json, namespace='/crawl')
-            nums = nums + 1
-            print("nums", nums)
-            data = {'num': f"正在写入第{nums}条数据  "}
+
+            page = self.redis_client.get('new_page')
+            page = page.decode('utf-8')
+            data = {'num': f"正在写入第{page}条数据  "}
+            page = int(page) + 1
+            self.redis_client.set('new_page', str(page))
+
             data2 = json.dumps(dict(data), ensure_ascii=False)
             self.redis_client.lpush('movie_data_list', data2)
             self.redis_client.lpush('movie_data_list', data_json)
