@@ -63,6 +63,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const securityLink = document.querySelector('#security-link');
     const securityOverlay = document.querySelector('#security-overlay');
     const updatePasswordBtn = document.querySelector('#update-password-btn');
+    const oldpassword_input = document.querySelector('#old-password');
+    const newpassword_input = document.querySelector('#new-password');
+
 
     securityLink.addEventListener('click', function () {
         securityOverlay.style.display = 'flex';
@@ -80,10 +83,11 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 if (data.code === 0) {
-                    console.log("修改成功")
+                    alert('修改成功')
                 } else {
                     console.log('Update failed:', data.message);
                     console.error('Update failed:', data.message);
+                    alert('更改失败勒---'+data.message)
                 }
             })
             .catch(error => {
@@ -214,8 +218,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         p3Elements.textContent = "当前昵称: " + nicknameInput.value;
                     }
                     avatarModal.style.display = 'none'; // Close the modal
+                    alert("修改成功")
                 } else {
-                    console.error('Update failed:', data.message);
+                    alert("修改失败勒---"+data.message)
+
                 }
             })
             .catch(error => {

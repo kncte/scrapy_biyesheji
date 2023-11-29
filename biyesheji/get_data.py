@@ -18,7 +18,7 @@ class NewsDatabaseManager:
 
     def get_data(self, page, page_size):
         connection = pymysql.connect(
-            host='121.196.205.18',
+            host='8.134.56.160',
             user='mydatabase',
             password='111119',
             db='mydatabase',
@@ -62,7 +62,7 @@ class MusicDatabaseManager:
 
     def get_data(self, page, page_size):
         connection = pymysql.connect(
-            host='121.196.205.18',
+            host='8.134.56.160',
             user='mydatabase',
             password='111119',
             db='mydatabase',
@@ -105,7 +105,7 @@ class MovieDatabaseManager:
 
     def get_data(self, page, page_size):
         connection = pymysql.connect(
-            host='121.196.205.18',
+            host='8.134.56.160',
             user='mydatabase',
             password='111119',
             db='mydatabase',

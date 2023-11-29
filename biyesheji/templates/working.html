@@ -13,8 +13,6 @@
 <h1 style="font-size: 40px">投递任务</h1>
     <div class="container"> <!-- 新增容器 div -->
         <form action="/submit" method="post" id="task-form">
-            <label for="thread_count">线程数量：</label>
-            <input type="number" id="thread_count" name="thread_count" min="1" max="10" required value="1"><br><br>
 
             <label for="task_type">任务类型：</label>
             <select id="task_type" name="task_type">
@@ -42,14 +40,17 @@
     document.querySelector('form').addEventListener('submit', async function (event) {
         event.preventDefault();
 
-        const threadCount = document.querySelector('#thread_count').value;
+
         const taskType = document.querySelector('#task_type').value;
         const keyword = document.querySelector('#keyword').value;
         const data = {
-          thread_count: threadCount,
           task_type: taskType,
           keyword: keyword
             };
+        if (keyword ===''){
+            alert("请输入关键字")
+            return
+        }
         console.log(data)
         const response = await fetch('/do', {
             method: 'POST',

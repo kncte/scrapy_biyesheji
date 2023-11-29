@@ -11,7 +11,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # 示例数据，通常需要根据实际情况调整
 
 secret_key = "like666"  # 密钥，需要保密
-redis_client = redis.Redis(host='121.196.205.18', port=6379, db=0, password=123456)
+redis_client = redis.Redis(host='8.134.56.160', port=6379, db=0, password=123456)
 
 
 def token_required(f):

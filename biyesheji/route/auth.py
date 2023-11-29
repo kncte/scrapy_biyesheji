@@ -1,21 +1,16 @@
 import configparser
-import os
-import random
-
 import pymysql
 import redis
 from flask import Blueprint, flash, redirect, url_for, request, session, send_file, render_template, jsonify, \
-    current_app, make_response
-from flask_jwt_extended import create_access_token, jwt_required
+    current_app
 from flask_login import login_required, logout_user, login_user, UserMixin, current_user
-
 import random
 import string
 from io import BytesIO
 from PIL import Image, ImageFont, ImageDraw
 import os
 
-from biyesheji.authentication import set_password, check_password, creat_token, token_required
+from biyesheji.authentication import set_password, check_password
 
 auth_blueprint = Blueprint('auth', __name__)
 
@@ -31,7 +26,7 @@ mysql = pymysql.connect(
     db='mydatabase',
     cursorclass=pymysql.cursors.DictCursor  # 设置游标类以返回字典格式的结果
 )
-redis_client = redis.Redis(host='121.196.205.18', port=6379, db=0, password=123456)
+redis_client = redis.Redis(host='8.134.56.160', port=6379, db=0, password=123456)
 
 
 # current_app.config['MAIL_SERVER'] = "smtp.qq.com"
@@ -92,8 +87,9 @@ def register():
 def vcode():
     code, bstring = ImageCode().draw_verify_code()
     session['vcode'] = code.lower()
-
-    print(session.get('vcode'))
+    if vcode is not None:
+        print(vcode)
+        print(session.get('vcode'))
     # 将图像数据转换为文件并发送给客户端
     return send_file(
         bstring,
@@ -193,78 +189,6 @@ def get_user():
         return jsonify({'error': 'User not found'}), 404
 
 
-@auth_blueprint.route('/update_profile', methods=['POST'])
-@login_required
-def update_profile():
-    # 获取请求中的表单字段
-    print(request.files)
-    username = request.form['username']
-    email = request.form['email']
-    nickname = request.form['nickname']
-    user_id = int(current_user.get_id())  # 获取当前登录用户的ID
-    file = request.files['avatar']
-    print(file)
-    try:
-        cur = mysql.cursor()
-        # 构建基本的 SQL UPDATE 语句
-        sql = "UPDATE userdatabase SET "
-        update_data = []  # 用于存储要更新的字段和值
-        if nickname:
-            sql += "nickname = %s, "
-            update_data.append(nickname)
-        if username:
-            sql += "username = %s, "
-            update_data.append(username)
-        if email:
-            sql += "email = %s, "
-            update_data.append(email)
-
-        if file and file.filename != '' and allowed_file(file.filename):
-            user_id = int(current_user.id)
-            filename = f"id_{user_id}.png"
-            print(filename)
-            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-            file_data = f"../static/uploads/" + filename
-            cur = mysql.cursor()
-            # 使用单个 SQL 查询同时更新昵称和邮箱
-            cur.execute("UPDATE userdatabase SET avatarUrl = %s WHERE id = %s", (file_data, user_id))
-            mysql.commit()
-            cur.close()
-            os.makedirs(os.path.dirname(file_path), exist_ok=True)
-            file.save(file_path)
-            return jsonify({'code': 0, 'message': '更新成功'})
-
-        # 去掉最后一个逗号和空格
-        if update_data:
-            sql = sql[:-2]
-
-        # 添加 WHERE 子句
-        sql += " WHERE id = %s"
-
-        # 添加用户ID到更新数据中
-        print("id--", user_id)
-        update_data.append(user_id)
-        # 执行更新操作
-        print("----11", update_data, tuple(update_data))
-        cur.execute(sql, tuple(update_data))
-        mysql.commit()
-        cur.close()
-    except Exception as e:
-        mysql.rollback()
-        print("错误---", e)
-        return jsonify({'code': 2, 'message': '更新失败'})
-
-    # 检查是否包含文件
-    # if 'avatar' in request.files:
-    #     file = request.files['avatar']
-    #
-    #     # 仅在包含文件并且文件不为空且文件类型有效时执行文件上传操作
-    #
-
-    # 返回成功响应，无论是否上传了文件
-    return jsonify({'code': 0, 'message': '更新成功'})
-
-
 @auth_blueprint.route('/change_password', methods=['POST'])
 @login_required
 def change_password():
@@ -284,7 +208,7 @@ def change_password():
             cur.close()
             return jsonify({'code': 0, 'message': 'yes'})
         else:
-            return jsonify({'code': 0, 'message': 'no'})
+            return jsonify({'code': 400, 'message': '错啦！'})
     return jsonify({'code': 2, 'message': 'nonnnnnnn'})
 
 
@@ -335,7 +259,7 @@ class ImageCode:
                       fill=self.rand_color(), font=font)
             self.draw_lines(draw, 2, width, height)  # 绘制干扰线
         # im.show()  # 如需临时调试，可以直接将生成的图片显示出来
-
+        print("---------------")
         bstring = BytesIO()
         im.save(bstring, 'PNG')
         bstring.seek(0)

@@ -57,7 +57,6 @@ def admin_getmsg():
         return {'code': 1, 'msg': 'error'}
 
 
-
 @admin_blueprint.route('/admin_message')
 @login_required
 def message__():
@@ -68,7 +67,6 @@ def message__():
         print("Error in message__:", str(e))
         # 处理错误，返回一个错误页面或者其他适当的响应
         return render_template('1.html', error_message='An error occurred.')
-
 
 
 @admin_blueprint.route('/handle_message', methods=['POST'])
@@ -95,7 +93,8 @@ def reply_message():
     time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     cur = mysql.cursor()
-    cur.execute("UPDATE complaintdatabase SET return_content = %s, handle_time = %s ,is_handle = %s WHERE id = %s", (reply_content, time, 1,message_id))
+    cur.execute("UPDATE complaintdatabase SET return_content = %s, handle_time = %s ,is_handle = %s WHERE id = %s",
+                (reply_content, time, 1, message_id))
     # 使用你的 ORM 或数据库 API 更新数据库中的回复内容
     cur.close()
     mysql.commit()
